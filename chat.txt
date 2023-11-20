@@ -1,0 +1,42 @@
+// örnek çıktı
+
+user: Nodejs Promise ile ilgili detaylı örneklerler bilgi verir misin ? Sıfırdan bir kullanıcıya anlatır gibi
+assistant: Elbette! Node.js'de Promise, asenkron işlemleri daha düzgün bir şekilde yönetmek için kullanılan bir yapıdır. Promise, belirli bir işlem tamamlandığında sonuç veya hata döndürmek için kullanılır. İşte Promise kullanımıyla ilgili sıfırdan başlayarak anlatılmış bir örnek:
+
+1. Adım: İlk olarak, Promise döndüren bir fonksiyon tanımlamamız gerekiyor. Bu örnekte, bir kullanıcının kaydedilmesini simüle eden asyncRegisterUser adında bir fonksiyon tanımlayalım:
+
+```javascript
+async function asyncRegisterUser(user) {
+  return new Promise((resolve, reject) => {
+    // Kullanıcı kaydetme işlemi burada yapılır
+    // Başarılı olduğunda: resolve(dönüş değeri)
+    // Hata olduğunda: reject(hata)
+    // Örnek olarak, 2 saniye bekle ve her zaman başarılı dön
+
+    setTimeout(() => {
+      resolve({
+        message: "Kullanıcı kaydı başarıyla tamamlandı.",
+        user: user
+      });
+    }, 2000);
+  });
+}
+```
+
+2. Adım: asyncRegisterUser fonksiyonunu kullanarak Promise'ı kullanmaya başlayalım. İşte kullanımı:
+
+```javascript
+asyncRegisterUser({ name: "John", email: "john@example.com" })
+  .then((response) => {
+    console.log(response);
+    // Başarılı olursa bu satır çalışır
+  })
+  .catch((error) => {
+    console.error(error);
+    // Hata olursa bu satır çalışır
+  });
+```
+
+Yukarıdaki kodda, asyncRegisterUser fonksiyonu kullanıcı kaydını simüle ediyor. Fonksiyon içinde, 2 saniye bekleme süresi uygulanıyor ve sonunda bir dönüş nesnesi resolve ediliyor. Sonra .then() zinciri ile başarılı sonuç yakalanır ve .catch() zinciri ile hata yakalanır.
+
+Bu örnekte, kullanıcı kaydının başarılı bir şekilde tamamlandığını kontrol etmek için Promise kullanılıyor. Asenkron işlemlerin sonuçlarını veya hatalarını yönetmek için daha karmaşık senaryolarda da Promise kullanılabilir.
