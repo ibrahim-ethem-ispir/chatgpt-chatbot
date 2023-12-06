@@ -1,12 +1,15 @@
 import express from "express";
 import openai from "./config/open-ai.js";
 import colors from "colors";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
-import './config/dbConnection.js';
+import "./config/dbConnection.js";
+import blog from "./blog.schema.js";
+import cors from "cors";
 
 const port = process.env.PORT || 5006;
 const app = express();
+app.use(cors());
 
 app.use(express.json());
 app.use(express.json({ limit: "50mb" }));
@@ -42,14 +45,33 @@ app.post("/chat", async (req, res) => {
     // Get completion text/content
     const completionText = completion.data.choices[0].message.content;
 
-
-    
     console.log(colors.bgRed("Bot: ") + completionText);
+
+    try {
+      // veritabanına kaydet
+      const newData = new blog({
+        message: message,
+        content: completionText,
+      });
+
+      await newData.save();
+    } catch (error) {
+      console.log(colors.bgRed("Bot: " + error));
+    }
 
     res.send({
       message,
       reply: completionText,
     });
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
+app.get("/api/blog", async (req, res) => {
+  try {
+    const data = await blog.find();
+    res.send(data);
   } catch (error) {
     throw new Error(error);
   }
