@@ -24,4 +24,10 @@ Run the bot:
 npm start
 ```
 
+console:
+
+```bash
+npm console
+```
+
 
